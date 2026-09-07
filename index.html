@@ -5,45 +5,349 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>NOUVEM Customer Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #1f2937;
+        }
+
+        /* Header */
+        header {
+            background-color: #1f2937;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            font-size: 26px;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        /* Main page */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        section {
+            margin-bottom: 35px;
+        }
+
+        section h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        /* Dashboard */
+        #dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-card p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card h3 {
+            font-size: 28px;
+        }
+
+        /* Customer section */
+        .customer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .customer-header h2 {
+            margin-bottom: 0;
+        }
+
+        #add-customer-button {
+            border: none;
+            background-color: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #add-customer-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Customer table */
+        #customer-list {
+            background-color: white;
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background-color: #f9fafb;
+            color: #6b7280;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Status labels */
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-implementation {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-support {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Action buttons */
+        .action-button {
+            border: 1px solid #d1d5db;
+            background-color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .action-button:hover {
+            background-color: #f3f4f6;
+        }
+
+        .delete-button {
+            color: #dc2626;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 800px) {
+            #dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            #dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    
+    <!-- Application Header -->
     <header>
         <h1>NOUVEM</h1>
         <p>Customer Management System</p>
     </header>
 
-    
     <main>
 
-        
+        <!-- Dashboard Section -->
         <section id="dashboard">
             <h2>Dashboard</h2>
 
             <div id="dashboard-cards">
-                
+
+                <div class="dashboard-card">
+                    <p>Total Customers</p>
+                    <h3>4</h3>
+                </div>
+
+                <div class="dashboard-card">
+                    <p>Active Customers</p>
+                    <h3>2</h3>
+                </div>
+
+                <div class="dashboard-card">
+                    <p>Implementations</p>
+                    <h3>1</h3>
+                </div>
+
+                <div class="dashboard-card">
+                    <p>Support Required</p>
+                    <h3>1</h3>
+                </div>
+
             </div>
         </section>
 
-        
+        <!-- Customer Management Section -->
         <section id="customers">
-            <h2>Customers</h2>
 
-            <div id="customer-actions">
-                
+            <div class="customer-header">
+                <h2>Customers</h2>
+
+                <button id="add-customer-button">
+                    + Add Customer
+                </button>
             </div>
 
             <div id="customer-list">
-                
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>GreenFields Foods</td>
+                            <td>Sarah Kelly</td>
+                            <td>sarah@example.com</td>
+                            <td>Dublin</td>
+                            <td>
+                                <span class="status status-active">
+                                    Active
+                                </span>
+                            </td>
+                            <td>
+                                <button class="action-button">Edit</button>
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Irish Protein Ltd</td>
+                            <td>John Murphy</td>
+                            <td>john@example.com</td>
+                            <td>Cork</td>
+                            <td>
+                                <span class="status status-implementation">
+                                    Implementation
+                                </span>
+                            </td>
+                            <td>
+                                <button class="action-button">Edit</button>
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Emerald Meats</td>
+                            <td>Emma Byrne</td>
+                            <td>emma@example.com</td>
+                            <td>Meath</td>
+                            <td>
+                                <span class="status status-active">
+                                    Active
+                                </span>
+                            </td>
+                            <td>
+                                <button class="action-button">Edit</button>
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Atlantic Foods</td>
+                            <td>Michael Ryan</td>
+                            <td>michael@example.com</td>
+                            <td>Galway</td>
+                            <td>
+                                <span class="status status-support">
+                                    Support Required
+                                </span>
+                            </td>
+                            <td>
+                                <button class="action-button">Edit</button>
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
             </div>
+
         </section>
 
     </main>
 
-    
     <script>
+        
     </script>
 
 </body>
