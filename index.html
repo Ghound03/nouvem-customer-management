@@ -19,7 +19,6 @@
             color: #1f2937;
         }
 
-        /* Header */
         header {
             background-color: #1f2937;
             color: white;
@@ -36,7 +35,6 @@
             font-size: 14px;
         }
 
-        /* Main page */
         main {
             max-width: 1200px;
             margin: 0 auto;
@@ -52,7 +50,6 @@
             font-size: 22px;
         }
 
-        /* Dashboard */
         #dashboard-cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -76,7 +73,6 @@
             font-size: 28px;
         }
 
-        /* Customer section */
         .customer-header {
             display: flex;
             justify-content: space-between;
@@ -103,7 +99,6 @@
             background-color: #1d4ed8;
         }
 
-        /* Customer table */
         #customer-list {
             background-color: white;
             border-radius: 8px;
@@ -138,7 +133,6 @@
             background-color: #f9fafb;
         }
 
-        /* Status labels */
         .status {
             display: inline-block;
             padding: 5px 10px;
@@ -162,7 +156,6 @@
             color: #92400e;
         }
 
-        /* Action buttons */
         .action-button {
             border: 1px solid #d1d5db;
             background-color: white;
@@ -180,10 +173,75 @@
             color: #dc2626;
         }
 
-        /* Responsive layout */
+        /* Customer form */
+        #customer-form-container {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        #customer-form-container h3 {
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-button {
+            border: none;
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            border: 1px solid #d1d5db;
+            background-color: white;
+            padding: 10px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
         @media (max-width: 800px) {
             #dashboard-cards {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -201,7 +259,6 @@
 
 <body>
 
-    <!-- Application Header -->
     <header>
         <h1>NOUVEM</h1>
         <p>Customer Management System</p>
@@ -209,7 +266,6 @@
 
     <main>
 
-        <!-- Dashboard Section -->
         <section id="dashboard">
             <h2>Dashboard</h2>
 
@@ -217,7 +273,7 @@
 
                 <div class="dashboard-card">
                     <p>Total Customers</p>
-                    <h3>4</h3>
+                    <h3 id="total-customers">4</h3>
                 </div>
 
                 <div class="dashboard-card">
@@ -238,7 +294,6 @@
             </div>
         </section>
 
-        <!-- Customer Management Section -->
         <section id="customers">
 
             <div class="customer-header">
@@ -247,6 +302,61 @@
                 <button id="add-customer-button">
                     + Add Customer
                 </button>
+            </div>
+
+            <!-- Add Customer Form -->
+            <div id="customer-form-container">
+
+                <h3>Add Customer</h3>
+
+                <form id="customer-form">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="company">Company Name</label>
+                            <input type="text" id="company" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">Contact Person</label>
+                            <input type="text" id="contact" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status</label>
+
+                            <select id="status" required>
+                                <option value="Active">Active</option>
+                                <option value="Implementation">Implementation</option>
+                                <option value="Support Required">Support Required</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="save-button">
+                            Save Customer
+                        </button>
+
+                        <button type="button" id="cancel-button" class="cancel-button">
+                            Cancel
+                        </button>
+                    </div>
+
+                </form>
+
             </div>
 
             <div id="customer-list">
@@ -263,7 +373,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="customer-table-body">
 
                         <tr>
                             <td>GreenFields Foods</td>
@@ -271,15 +381,11 @@
                             <td>sarah@example.com</td>
                             <td>Dublin</td>
                             <td>
-                                <span class="status status-active">
-                                    Active
-                                </span>
+                                <span class="status status-active">Active</span>
                             </td>
                             <td>
                                 <button class="action-button">Edit</button>
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
+                                <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
 
@@ -295,9 +401,7 @@
                             </td>
                             <td>
                                 <button class="action-button">Edit</button>
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
+                                <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
 
@@ -307,15 +411,11 @@
                             <td>emma@example.com</td>
                             <td>Meath</td>
                             <td>
-                                <span class="status status-active">
-                                    Active
-                                </span>
+                                <span class="status status-active">Active</span>
                             </td>
                             <td>
                                 <button class="action-button">Edit</button>
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
+                                <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
 
@@ -331,9 +431,7 @@
                             </td>
                             <td>
                                 <button class="action-button">Edit</button>
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
+                                <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
 
@@ -347,7 +445,67 @@
     </main>
 
     <script>
-        
+        const addCustomerButton = document.getElementById("add-customer-button");
+        const customerFormContainer = document.getElementById("customer-form-container");
+        const customerForm = document.getElementById("customer-form");
+        const cancelButton = document.getElementById("cancel-button");
+        const customerTableBody = document.getElementById("customer-table-body");
+        const totalCustomers = document.getElementById("total-customers");
+
+        addCustomerButton.addEventListener("click", function () {
+            customerFormContainer.style.display = "block";
+        });
+
+        cancelButton.addEventListener("click", function () {
+            customerForm.reset();
+            customerFormContainer.style.display = "none";
+        });
+
+        customerForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const company = document.getElementById("company").value;
+            const contact = document.getElementById("contact").value;
+            const email = document.getElementById("email").value;
+            const location = document.getElementById("location").value;
+            const status = document.getElementById("status").value;
+
+            let statusClass = "";
+
+            if (status === "Active") {
+                statusClass = "status-active";
+            } else if (status === "Implementation") {
+                statusClass = "status-implementation";
+            } else {
+                statusClass = "status-support";
+            }
+
+            const newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                <td>${company}</td>
+                <td>${contact}</td>
+                <td>${email}</td>
+                <td>${location}</td>
+                <td>
+                    <span class="status ${statusClass}">
+                        ${status}
+                    </span>
+                </td>
+                <td>
+                    <button class="action-button">Edit</button>
+                    <button class="action-button delete-button">Delete</button>
+                </td>
+            `;
+
+            customerTableBody.appendChild(newRow);
+
+            totalCustomers.textContent =
+                customerTableBody.querySelectorAll("tr").length;
+
+            customerForm.reset();
+            customerFormContainer.style.display = "none";
+        });
     </script>
 
 </body>
