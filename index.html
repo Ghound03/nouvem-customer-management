@@ -304,7 +304,7 @@
                 </button>
             </div>
 
-            <!-- Add Customer Form -->
+    
             <div id="customer-form-container">
 
                 <h3>Add Customer</h3>
@@ -384,7 +384,7 @@
                                 <span class="status status-active">Active</span>
                             </td>
                             <td>
-                                <button class="action-button">Edit</button>
+                                <button class="action-button edit-button">Edit</button>
                                 <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
@@ -400,7 +400,7 @@
                                 </span>
                             </td>
                             <td>
-                                <button class="action-button">Edit</button>
+                                <button class="action-button edit-button">Edit</button>
                                 <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
@@ -414,7 +414,7 @@
                                 <span class="status status-active">Active</span>
                             </td>
                             <td>
-                                <button class="action-button">Edit</button>
+                                <button class="action-button edit-button">Edit</button>
                                 <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
@@ -430,7 +430,7 @@
                                 </span>
                             </td>
                             <td>
-                                <button class="action-button">Edit</button>
+                                <button class="action-button edit-button">Edit</button>
                                 <button class="action-button delete-button">Delete</button>
                             </td>
                         </tr>
@@ -445,41 +445,72 @@
     </main>
 
     <script>
-        const addCustomerButton = document.getElementById("add-customer-button");
-        const customerFormContainer = document.getElementById("customer-form-container");
-        const customerForm = document.getElementById("customer-form");
-        const cancelButton = document.getElementById("cancel-button");
-        const customerTableBody = document.getElementById("customer-table-body");
-        const totalCustomers = document.getElementById("total-customers");
+    const addCustomerButton = document.getElementById("add-customer-button");
+    const customerFormContainer = document.getElementById("customer-form-container");
+    const customerForm = document.getElementById("customer-form");
+    const cancelButton = document.getElementById("cancel-button");
+    const customerTableBody = document.getElementById("customer-table-body");
+    const totalCustomers = document.getElementById("total-customers");
 
-        addCustomerButton.addEventListener("click", function () {
-            customerFormContainer.style.display = "block";
-        });
+    let editingRow = null;
 
-        cancelButton.addEventListener("click", function () {
-            customerForm.reset();
-            customerFormContainer.style.display = "none";
-        });
+    addCustomerButton.addEventListener("click", function () {
+        editingRow = null;
 
-        customerForm.addEventListener("submit", function (event) {
-            event.preventDefault();
+        customerForm.reset();
 
-            const company = document.getElementById("company").value;
-            const contact = document.getElementById("contact").value;
-            const email = document.getElementById("email").value;
-            const location = document.getElementById("location").value;
-            const status = document.getElementById("status").value;
+        document.querySelector("#customer-form-container h3").textContent =
+            "Add Customer";
 
-            let statusClass = "";
+        document.querySelector(".save-button").textContent =
+            "Save Customer";
 
-            if (status === "Active") {
-                statusClass = "status-active";
-            } else if (status === "Implementation") {
-                statusClass = "status-implementation";
-            } else {
-                statusClass = "status-support";
-            }
+        customerFormContainer.style.display = "block";
+    });
 
+    cancelButton.addEventListener("click", function () {
+        customerForm.reset();
+        customerFormContainer.style.display = "none";
+        editingRow = null;
+    });
+
+    customerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const company = document.getElementById("company").value;
+        const contact = document.getElementById("contact").value;
+        const email = document.getElementById("email").value;
+        const location = document.getElementById("location").value;
+        const status = document.getElementById("status").value;
+
+        let statusClass = "";
+
+        if (status === "Active") {
+            statusClass = "status-active";
+        } else if (status === "Implementation") {
+            statusClass = "status-implementation";
+        } else {
+            statusClass = "status-support";
+        }
+
+        if (editingRow !== null) {
+
+            editingRow.cells[0].textContent = company;
+            editingRow.cells[1].textContent = contact;
+            editingRow.cells[2].textContent = email;
+            editingRow.cells[3].textContent = location;
+
+            editingRow.cells[4].innerHTML = `
+                <span class="status ${statusClass}">
+                    ${status}
+                </span>
+            `;
+
+            editingRow = null;
+
+        } else {
+
+        
             const newRow = document.createElement("tr");
 
             newRow.innerHTML = `
@@ -493,20 +524,79 @@
                     </span>
                 </td>
                 <td>
-                    <button class="action-button">Edit</button>
-                    <button class="action-button delete-button">Delete</button>
+                    <button class="action-button edit-button">
+                        Edit
+                    </button>
+
+                    <button class="action-button delete-button">
+                        Delete
+                    </button>
                 </td>
             `;
 
             customerTableBody.appendChild(newRow);
+        }
 
-            totalCustomers.textContent =
-                customerTableBody.querySelectorAll("tr").length;
+        updateCustomerCount();
 
-            customerForm.reset();
-            customerFormContainer.style.display = "none";
-        });
-    </script>
+        customerForm.reset();
+        customerFormContainer.style.display = "none";
+
+        document.querySelector("#customer-form-container h3").textContent =
+            "Add Customer";
+
+        document.querySelector(".save-button").textContent =
+            "Save Customer";
+    });
+
+    
+    customerTableBody.addEventListener("click", function (event) {
+
+        if (
+            event.target.classList.contains("edit-button") ||
+            (
+                event.target.classList.contains("action-button") &&
+                !event.target.classList.contains("delete-button")
+            )
+        ) {
+            const row = event.target.closest("tr");
+
+            editingRow = row;
+
+            document.getElementById("company").value =
+                row.cells[0].textContent.trim();
+
+            document.getElementById("contact").value =
+                row.cells[1].textContent.trim();
+
+            document.getElementById("email").value =
+                row.cells[2].textContent.trim();
+
+            document.getElementById("location").value =
+                row.cells[3].textContent.trim();
+
+            document.getElementById("status").value =
+                row.cells[4].textContent.trim();
+
+            document.querySelector("#customer-form-container h3").textContent =
+                "Edit Customer";
+
+            document.querySelector(".save-button").textContent =
+                "Update Customer";
+
+            customerFormContainer.style.display = "block";
+
+            customerFormContainer.scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+    });
+
+    function updateCustomerCount() {
+        totalCustomers.textContent =
+            customerTableBody.querySelectorAll("tr").length;
+    }
+</script>
 
 </body>
 </html>
