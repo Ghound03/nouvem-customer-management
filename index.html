@@ -50,6 +50,7 @@
             font-size: 22px;
         }
 
+        
         #dashboard-cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -73,6 +74,7 @@
             font-size: 28px;
         }
 
+       
         .customer-header {
             display: flex;
             justify-content: space-between;
@@ -99,81 +101,30 @@
             background-color: #1d4ed8;
         }
 
-        #customer-list {
-            background-color: white;
-            border-radius: 8px;
-            overflow-x: auto;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        /* Search and filter tools */
+        .customer-tools {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 16px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        th {
-            background-color: #f9fafb;
-            color: #6b7280;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
-
-        td {
+        .customer-tools input,
+        .customer-tools select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
             font-size: 14px;
         }
 
-        tbody tr:hover {
-            background-color: #f9fafb;
+        .customer-tools input {
+            flex: 1;
         }
 
-        .status {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+        .customer-tools select {
+            min-width: 180px;
         }
 
-        .status-active {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-
-        .status-implementation {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-support {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-
-        .action-button {
-            border: 1px solid #d1d5db;
-            background-color: white;
-            padding: 6px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-
-        .action-button:hover {
-            background-color: #f3f4f6;
-        }
-
-        .delete-button {
-            color: #dc2626;
-        }
-
-        /* Customer form */
+        
         #customer-form-container {
             display: none;
             background-color: white;
@@ -227,6 +178,10 @@
             cursor: pointer;
         }
 
+        .save-button:hover {
+            background-color: #1d4ed8;
+        }
+
         .cancel-button {
             border: 1px solid #d1d5db;
             background-color: white;
@@ -235,6 +190,88 @@
             cursor: pointer;
         }
 
+        .cancel-button:hover {
+            background-color: #f3f4f6;
+        }
+
+       
+        #customer-list {
+            background-color: white;
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background-color: #f9fafb;
+            color: #6b7280;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+       
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-implementation {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-support {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        
+        .action-button {
+            border: 1px solid #d1d5db;
+            background-color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .action-button:hover {
+            background-color: #f3f4f6;
+        }
+
+        .delete-button {
+            color: #dc2626;
+        }
+
+        
         @media (max-width: 800px) {
             #dashboard-cards {
                 grid-template-columns: repeat(2, 1fr);
@@ -242,6 +279,22 @@
 
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .customer-tools {
+                flex-direction: column;
+            }
+
+            .customer-tools select {
+                width: 100%;
+            }
+
+            .customer-header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
             }
         }
 
@@ -266,7 +319,9 @@
 
     <main>
 
+        
         <section id="dashboard">
+
             <h2>Dashboard</h2>
 
             <div id="dashboard-cards">
@@ -292,19 +347,41 @@
                 </div>
 
             </div>
+
         </section>
 
+       
         <section id="customers">
 
             <div class="customer-header">
+
                 <h2>Customers</h2>
 
                 <button id="add-customer-button">
                     + Add Customer
                 </button>
+
             </div>
 
-    
+            
+            <div class="customer-tools">
+
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search customers..."
+                >
+
+                <select id="status-filter">
+                    <option value="All">All Statuses</option>
+                    <option value="Active">Active</option>
+                    <option value="Implementation">Implementation</option>
+                    <option value="Support Required">Support Required</option>
+                </select>
+
+            </div>
+
+            
             <div id="customer-form-container">
 
                 <h3>Add Customer</h3>
@@ -315,54 +392,92 @@
 
                         <div class="form-group">
                             <label for="company">Company Name</label>
-                            <input type="text" id="company" required>
+                            <input
+                                type="text"
+                                id="company"
+                                required
+                            >
                         </div>
 
                         <div class="form-group">
                             <label for="contact">Contact Person</label>
-                            <input type="text" id="contact" required>
+                            <input
+                                type="text"
+                                id="contact"
+                                required
+                            >
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" required>
+                            <input
+                                type="email"
+                                id="email"
+                                required
+                            >
                         </div>
 
                         <div class="form-group">
                             <label for="location">Location</label>
-                            <input type="text" id="location" required>
+                            <input
+                                type="text"
+                                id="location"
+                                required
+                            >
                         </div>
 
                         <div class="form-group">
+
                             <label for="status">Status</label>
 
                             <select id="status" required>
-                                <option value="Active">Active</option>
-                                <option value="Implementation">Implementation</option>
-                                <option value="Support Required">Support Required</option>
+                                <option value="Active">
+                                    Active
+                                </option>
+
+                                <option value="Implementation">
+                                    Implementation
+                                </option>
+
+                                <option value="Support Required">
+                                    Support Required
+                                </option>
                             </select>
+
                         </div>
 
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="save-button">
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
                             Save Customer
                         </button>
 
-                        <button type="button" id="cancel-button" class="cancel-button">
+                        <button
+                            type="button"
+                            id="cancel-button"
+                            class="cancel-button"
+                        >
                             Cancel
                         </button>
+
                     </div>
 
                 </form>
 
             </div>
 
+            
             <div id="customer-list">
 
                 <table>
+
                     <thead>
+
                         <tr>
                             <th>Company</th>
                             <th>Contact</th>
@@ -371,6 +486,7 @@
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
+
                     </thead>
 
                     <tbody id="customer-table-body">
@@ -380,12 +496,21 @@
                             <td>Sarah Kelly</td>
                             <td>sarah@example.com</td>
                             <td>Dublin</td>
+
                             <td>
-                                <span class="status status-active">Active</span>
+                                <span class="status status-active">
+                                    Active
+                                </span>
                             </td>
+
                             <td>
-                                <button class="action-button edit-button">Edit</button>
-                                <button class="action-button delete-button">Delete</button>
+                                <button class="action-button edit-button">
+                                    Edit
+                                </button>
+
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
 
@@ -394,14 +519,21 @@
                             <td>John Murphy</td>
                             <td>john@example.com</td>
                             <td>Cork</td>
+
                             <td>
                                 <span class="status status-implementation">
                                     Implementation
                                 </span>
                             </td>
+
                             <td>
-                                <button class="action-button edit-button">Edit</button>
-                                <button class="action-button delete-button">Delete</button>
+                                <button class="action-button edit-button">
+                                    Edit
+                                </button>
+
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
 
@@ -410,12 +542,21 @@
                             <td>Emma Byrne</td>
                             <td>emma@example.com</td>
                             <td>Meath</td>
+
                             <td>
-                                <span class="status status-active">Active</span>
+                                <span class="status status-active">
+                                    Active
+                                </span>
                             </td>
+
                             <td>
-                                <button class="action-button edit-button">Edit</button>
-                                <button class="action-button delete-button">Delete</button>
+                                <button class="action-button edit-button">
+                                    Edit
+                                </button>
+
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
 
@@ -424,18 +565,26 @@
                             <td>Michael Ryan</td>
                             <td>michael@example.com</td>
                             <td>Galway</td>
+
                             <td>
                                 <span class="status status-support">
                                     Support Required
                                 </span>
                             </td>
+
                             <td>
-                                <button class="action-button edit-button">Edit</button>
-                                <button class="action-button delete-button">Delete</button>
+                                <button class="action-button edit-button">
+                                    Edit
+                                </button>
+
+                                <button class="action-button delete-button">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
 
                     </tbody>
+
                 </table>
 
             </div>
@@ -445,162 +594,318 @@
     </main>
 
     <script>
-    const addCustomerButton = document.getElementById("add-customer-button");
-    const customerFormContainer = document.getElementById("customer-form-container");
-    const customerForm = document.getElementById("customer-form");
-    const cancelButton = document.getElementById("cancel-button");
-    const customerTableBody = document.getElementById("customer-table-body");
-    const totalCustomers = document.getElementById("total-customers");
+        const addCustomerButton =
+            document.getElementById("add-customer-button");
 
-    let editingRow = null;
+        const customerFormContainer =
+            document.getElementById("customer-form-container");
 
-    addCustomerButton.addEventListener("click", function () {
-        editingRow = null;
-        customerForm.reset();
+        const customerForm =
+            document.getElementById("customer-form");
 
-        document.querySelector("#customer-form-container h3").textContent =
-            "Add Customer";
+        const cancelButton =
+            document.getElementById("cancel-button");
 
-        document.querySelector(".save-button").textContent =
-            "Save Customer";
+        const customerTableBody =
+            document.getElementById("customer-table-body");
 
-        customerFormContainer.style.display = "block";
-    });
+        const totalCustomers =
+            document.getElementById("total-customers");
 
-    cancelButton.addEventListener("click", function () {
-        customerForm.reset();
-        customerFormContainer.style.display = "none";
-        editingRow = null;
-    });
+        const searchInput =
+            document.getElementById("search-input");
 
-    customerForm.addEventListener("submit", function (event) {
-        event.preventDefault();
+        const statusFilter =
+            document.getElementById("status-filter");
 
-        const company = document.getElementById("company").value;
-        const contact = document.getElementById("contact").value;
-        const email = document.getElementById("email").value;
-        const location = document.getElementById("location").value;
-        const status = document.getElementById("status").value;
+        let editingRow = null;
 
-        let statusClass = "";
 
-        if (status === "Active") {
-            statusClass = "status-active";
-        } else if (status === "Implementation") {
-            statusClass = "status-implementation";
-        } else {
-            statusClass = "status-support";
-        }
-
-        if (editingRow !== null) {
-            editingRow.cells[0].textContent = company;
-            editingRow.cells[1].textContent = contact;
-            editingRow.cells[2].textContent = email;
-            editingRow.cells[3].textContent = location;
-
-            editingRow.cells[4].innerHTML = `
-                <span class="status ${statusClass}">
-                    ${status}
-                </span>
-            `;
+       
+        addCustomerButton.addEventListener("click", function () {
 
             editingRow = null;
-        } else {
-            const newRow = document.createElement("tr");
 
-            newRow.innerHTML = `
-                <td>${company}</td>
-                <td>${contact}</td>
-                <td>${email}</td>
-                <td>${location}</td>
-                <td>
+            customerForm.reset();
+
+            document.querySelector(
+                "#customer-form-container h3"
+            ).textContent = "Add Customer";
+
+            document.querySelector(
+                ".save-button"
+            ).textContent = "Save Customer";
+
+            customerFormContainer.style.display = "block";
+        });
+
+
+       
+        cancelButton.addEventListener("click", function () {
+
+            customerForm.reset();
+
+            customerFormContainer.style.display = "none";
+
+            editingRow = null;
+        });
+
+
+        
+        customerForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const company =
+                document.getElementById("company").value;
+
+            const contact =
+                document.getElementById("contact").value;
+
+            const email =
+                document.getElementById("email").value;
+
+            const location =
+                document.getElementById("location").value;
+
+            const status =
+                document.getElementById("status").value;
+
+
+            let statusClass = "";
+
+
+            if (status === "Active") {
+
+                statusClass = "status-active";
+
+            } else if (status === "Implementation") {
+
+                statusClass = "status-implementation";
+
+            } else {
+
+                statusClass = "status-support";
+            }
+
+
+            
+            if (editingRow !== null) {
+
+                editingRow.cells[0].textContent = company;
+                editingRow.cells[1].textContent = contact;
+                editingRow.cells[2].textContent = email;
+                editingRow.cells[3].textContent = location;
+
+                editingRow.cells[4].innerHTML = `
                     <span class="status ${statusClass}">
                         ${status}
                     </span>
-                </td>
-                <td>
-                    <button class="action-button edit-button">
-                        Edit
-                    </button>
+                `;
 
-                    <button class="action-button delete-button">
-                        Delete
-                    </button>
-                </td>
-            `;
+                editingRow = null;
 
-            customerTableBody.appendChild(newRow);
-        }
+            } else {
 
-        updateCustomerCount();
+               
+                const newRow =
+                    document.createElement("tr");
 
-        customerForm.reset();
-        customerFormContainer.style.display = "none";
+                newRow.innerHTML = `
+                    <td>${company}</td>
+                    <td>${contact}</td>
+                    <td>${email}</td>
+                    <td>${location}</td>
 
-        document.querySelector("#customer-form-container h3").textContent =
-            "Add Customer";
+                    <td>
+                        <span class="status ${statusClass}">
+                            ${status}
+                        </span>
+                    </td>
 
-        document.querySelector(".save-button").textContent =
-            "Save Customer";
-    });
+                    <td>
+                        <button class="action-button edit-button">
+                            Edit
+                        </button>
 
-    customerTableBody.addEventListener("click", function (event) {
+                        <button class="action-button delete-button">
+                            Delete
+                        </button>
+                    </td>
+                `;
 
-        // Edit customer
-        if (event.target.classList.contains("edit-button")) {
-            const row = event.target.closest("tr");
+                customerTableBody.appendChild(newRow);
+            }
 
-            editingRow = row;
 
-            document.getElementById("company").value =
-                row.cells[0].textContent.trim();
+            updateCustomerCount();
 
-            document.getElementById("contact").value =
-                row.cells[1].textContent.trim();
+            filterCustomers();
 
-            document.getElementById("email").value =
-                row.cells[2].textContent.trim();
+            customerForm.reset();
 
-            document.getElementById("location").value =
-                row.cells[3].textContent.trim();
+            customerFormContainer.style.display = "none";
 
-            document.getElementById("status").value =
-                row.cells[4].textContent.trim();
+            document.querySelector(
+                "#customer-form-container h3"
+            ).textContent = "Add Customer";
 
-            document.querySelector("#customer-form-container h3").textContent =
-                "Edit Customer";
+            document.querySelector(
+                ".save-button"
+            ).textContent = "Save Customer";
+        });
 
-            document.querySelector(".save-button").textContent =
-                "Update Customer";
 
-            customerFormContainer.style.display = "block";
+       
+        customerTableBody.addEventListener("click", function (event) {
 
-            customerFormContainer.scrollIntoView({
-                behavior: "smooth"
+           
+            if (event.target.classList.contains("edit-button")) {
+
+                const row =
+                    event.target.closest("tr");
+
+                editingRow = row;
+
+
+                document.getElementById("company").value =
+                    row.cells[0].textContent.trim();
+
+                document.getElementById("contact").value =
+                    row.cells[1].textContent.trim();
+
+                document.getElementById("email").value =
+                    row.cells[2].textContent.trim();
+
+                document.getElementById("location").value =
+                    row.cells[3].textContent.trim();
+
+                document.getElementById("status").value =
+                    row.cells[4].textContent.trim();
+
+
+                document.querySelector(
+                    "#customer-form-container h3"
+                ).textContent = "Edit Customer";
+
+                document.querySelector(
+                    ".save-button"
+                ).textContent = "Update Customer";
+
+
+                customerFormContainer.style.display = "block";
+
+
+                customerFormContainer.scrollIntoView({
+                    behavior: "smooth"
+                });
+            }
+
+
+         
+            if (event.target.classList.contains("delete-button")) {
+
+                const row =
+                    event.target.closest("tr");
+
+                const companyName =
+                    row.cells[0].textContent.trim();
+
+
+                const confirmed = confirm(
+                    `Are you sure you want to delete ${companyName}?`
+                );
+
+
+                if (confirmed) {
+
+                    row.remove();
+
+                    updateCustomerCount();
+
+                    filterCustomers();
+                }
+            }
+        });
+
+
+        
+        function filterCustomers() {
+
+            const searchValue =
+                searchInput.value.toLowerCase();
+
+            const selectedStatus =
+                statusFilter.value;
+
+            const rows =
+                customerTableBody.querySelectorAll("tr");
+
+
+            rows.forEach(function (row) {
+
+                const company =
+                    row.cells[0].textContent.toLowerCase();
+
+                const contact =
+                    row.cells[1].textContent.toLowerCase();
+
+                const email =
+                    row.cells[2].textContent.toLowerCase();
+
+                const location =
+                    row.cells[3].textContent.toLowerCase();
+
+                const status =
+                    row.cells[4].textContent.trim();
+
+
+                const matchesSearch =
+                    company.includes(searchValue) ||
+                    contact.includes(searchValue) ||
+                    email.includes(searchValue) ||
+                    location.includes(searchValue);
+
+
+                const matchesStatus =
+                    selectedStatus === "All" ||
+                    status === selectedStatus;
+
+
+                if (matchesSearch && matchesStatus) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+                }
             });
         }
 
-        // Delete customer
-        if (event.target.classList.contains("delete-button")) {
-            const row = event.target.closest("tr");
-            const companyName = row.cells[0].textContent.trim();
 
-            const confirmed = confirm(
-                `Are you sure you want to delete ${companyName}?`
-            );
+        
+        searchInput.addEventListener(
+            "input",
+            filterCustomers
+        );
 
-            if (confirmed) {
-                row.remove();
-                updateCustomerCount();
-            }
+
+        
+        statusFilter.addEventListener(
+            "change",
+            filterCustomers
+        );
+
+
+        
+        function updateCustomerCount() {
+
+            totalCustomers.textContent =
+                customerTableBody.querySelectorAll("tr").length;
         }
-    });
 
-    function updateCustomerCount() {
-        totalCustomers.textContent =
-            customerTableBody.querySelectorAll("tr").length;
-    }
-</script>
+    </script>
 
 </body>
 </html>
