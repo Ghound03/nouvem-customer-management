@@ -491,7 +491,7 @@
 
                     <tbody id="customer-table-body">
 
-                        <tr>
+                        
                             <td>GreenFields Foods</td>
                             <td>Sarah Kelly</td>
                             <td>sarah@example.com</td>
@@ -512,9 +512,9 @@
                                     Delete
                                 </button>
                             </td>
-                        </tr>
+                        
 
-                        <tr>
+                        
                             <td>Irish Protein Ltd</td>
                             <td>John Murphy</td>
                             <td>john@example.com</td>
@@ -535,9 +535,9 @@
                                     Delete
                                 </button>
                             </td>
-                        </tr>
+                        
 
-                        <tr>
+                        
                             <td>Emerald Meats</td>
                             <td>Emma Byrne</td>
                             <td>emma@example.com</td>
@@ -558,9 +558,9 @@
                                     Delete
                                 </button>
                             </td>
-                        </tr>
+                        
 
-                        <tr>
+                        
                             <td>Atlantic Foods</td>
                             <td>Michael Ryan</td>
                             <td>michael@example.com</td>
@@ -581,7 +581,7 @@
                                     Delete
                                 </button>
                             </td>
-                        </tr>
+                        
 
                     </tbody>
 
@@ -594,318 +594,382 @@
     </main>
 
     <script>
-        const addCustomerButton =
-            document.getElementById("add-customer-button");
+    const addCustomerButton =
+        document.getElementById("add-customer-button");
 
-        const customerFormContainer =
-            document.getElementById("customer-form-container");
+    const customerFormContainer =
+        document.getElementById("customer-form-container");
 
-        const customerForm =
-            document.getElementById("customer-form");
+    const customerForm =
+        document.getElementById("customer-form");
 
-        const cancelButton =
-            document.getElementById("cancel-button");
+    const cancelButton =
+        document.getElementById("cancel-button");
 
-        const customerTableBody =
-            document.getElementById("customer-table-body");
+    const customerTableBody =
+        document.getElementById("customer-table-body");
 
-        const totalCustomers =
-            document.getElementById("total-customers");
+    const totalCustomers =
+        document.getElementById("total-customers");
 
-        const searchInput =
-            document.getElementById("search-input");
+    const searchInput =
+        document.getElementById("search-input");
 
-        const statusFilter =
-            document.getElementById("status-filter");
-
-        let editingRow = null;
+    const statusFilter =
+        document.getElementById("status-filter");
 
 
-       
-        addCustomerButton.addEventListener("click", function () {
+    
+    const defaultCustomers = [
+        {
+            company: "GreenFields Foods",
+            contact: "Sarah Kelly",
+            email: "sarah@example.com",
+            location: "Dublin",
+            status: "Active"
+        },
+        {
+            company: "Irish Protein Ltd",
+            contact: "John Murphy",
+            email: "john@example.com",
+            location: "Cork",
+            status: "Implementation"
+        },
+        {
+            company: "Emerald Meats",
+            contact: "Emma Byrne",
+            email: "emma@example.com",
+            location: "Meath",
+            status: "Active"
+        },
+        {
+            company: "Atlantic Foods",
+            contact: "Michael Ryan",
+            email: "michael@example.com",
+            location: "Galway",
+            status: "Support Required"
+        }
+    ];
 
-            editingRow = null;
 
-            customerForm.reset();
+   
+    let customers = JSON.parse(
+        localStorage.getItem("nouvemCustomers")
+    );
 
-            document.querySelector(
-                "#customer-form-container h3"
-            ).textContent = "Add Customer";
+    if (customers === null) {
+        customers = defaultCustomers;
 
-            document.querySelector(
-                ".save-button"
-            ).textContent = "Save Customer";
+        saveCustomers();
+    }
 
-            customerFormContainer.style.display = "block";
+
+    let editingIndex = null;
+
+
+   
+    function saveCustomers() {
+        localStorage.setItem(
+            "nouvemCustomers",
+            JSON.stringify(customers)
+        );
+    }
+
+
+   
+    function getStatusClass(status) {
+
+        if (status === "Active") {
+            return "status-active";
+        }
+
+        if (status === "Implementation") {
+            return "status-implementation";
+        }
+
+        return "status-support";
+    }
+
+
+   
+    function renderCustomers() {
+
+        customerTableBody.innerHTML = "";
+
+        customers.forEach(function (customer, index) {
+
+            const statusClass =
+                getStatusClass(customer.status);
+
+            const row =
+                document.createElement("tr");
+
+            row.dataset.index = index;
+
+            row.innerHTML = `
+                <td>${customer.company}</td>
+                <td>${customer.contact}</td>
+                <td>${customer.email}</td>
+                <td>${customer.location}</td>
+
+                <td>
+                    <span class="status ${statusClass}">
+                        ${customer.status}
+                    </span>
+                </td>
+
+                <td>
+                    <button class="action-button edit-button">
+                        Edit
+                    </button>
+
+                    <button class="action-button delete-button">
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            customerTableBody.appendChild(row);
         });
 
+        updateCustomerCount();
 
-       
-        cancelButton.addEventListener("click", function () {
+        filterCustomers();
+    }
 
-            customerForm.reset();
 
-            customerFormContainer.style.display = "none";
+    
+    addCustomerButton.addEventListener("click", function () {
 
-            editingRow = null;
-        });
+        editingIndex = null;
+
+        customerForm.reset();
+
+        document.querySelector(
+            "#customer-form-container h3"
+        ).textContent = "Add Customer";
+
+        document.querySelector(
+            ".save-button"
+        ).textContent = "Save Customer";
+
+        customerFormContainer.style.display = "block";
+    });
+
+
+   
+    cancelButton.addEventListener("click", function () {
+
+        customerForm.reset();
+
+        customerFormContainer.style.display = "none";
+
+        editingIndex = null;
+    });
+
+
+    
+    customerForm.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        const customer = {
+            company:
+                document.getElementById("company").value.trim(),
+
+            contact:
+                document.getElementById("contact").value.trim(),
+
+            email:
+                document.getElementById("email").value.trim(),
+
+            location:
+                document.getElementById("location").value.trim(),
+
+            status:
+                document.getElementById("status").value
+        };
 
 
         
-        customerForm.addEventListener("submit", function (event) {
+        if (editingIndex !== null) {
 
-            event.preventDefault();
+            customers[editingIndex] = customer;
 
-            const company =
-                document.getElementById("company").value;
+            editingIndex = null;
 
-            const contact =
-                document.getElementById("contact").value;
-
-            const email =
-                document.getElementById("email").value;
-
-            const location =
-                document.getElementById("location").value;
-
-            const status =
-                document.getElementById("status").value;
-
-
-            let statusClass = "";
-
-
-            if (status === "Active") {
-
-                statusClass = "status-active";
-
-            } else if (status === "Implementation") {
-
-                statusClass = "status-implementation";
-
-            } else {
-
-                statusClass = "status-support";
-            }
-
+        } else {
 
             
-            if (editingRow !== null) {
-
-                editingRow.cells[0].textContent = company;
-                editingRow.cells[1].textContent = contact;
-                editingRow.cells[2].textContent = email;
-                editingRow.cells[3].textContent = location;
-
-                editingRow.cells[4].innerHTML = `
-                    <span class="status ${statusClass}">
-                        ${status}
-                    </span>
-                `;
-
-                editingRow = null;
-
-            } else {
-
-               
-                const newRow =
-                    document.createElement("tr");
-
-                newRow.innerHTML = `
-                    <td>${company}</td>
-                    <td>${contact}</td>
-                    <td>${email}</td>
-                    <td>${location}</td>
-
-                    <td>
-                        <span class="status ${statusClass}">
-                            ${status}
-                        </span>
-                    </td>
-
-                    <td>
-                        <button class="action-button edit-button">
-                            Edit
-                        </button>
-
-                        <button class="action-button delete-button">
-                            Delete
-                        </button>
-                    </td>
-                `;
-
-                customerTableBody.appendChild(newRow);
-            }
+            customers.push(customer);
+        }
 
 
-            updateCustomerCount();
+        saveCustomers();
 
-            filterCustomers();
+        renderCustomers();
 
-            customerForm.reset();
+        customerForm.reset();
 
-            customerFormContainer.style.display = "none";
+        customerFormContainer.style.display = "none";
 
-            document.querySelector(
-                "#customer-form-container h3"
-            ).textContent = "Add Customer";
+        document.querySelector(
+            "#customer-form-container h3"
+        ).textContent = "Add Customer";
 
-            document.querySelector(
-                ".save-button"
-            ).textContent = "Save Customer";
-        });
-
-
-       
-        customerTableBody.addEventListener("click", function (event) {
-
-           
-            if (event.target.classList.contains("edit-button")) {
-
-                const row =
-                    event.target.closest("tr");
-
-                editingRow = row;
+        document.querySelector(
+            ".save-button"
+        ).textContent = "Save Customer";
+    });
 
 
-                document.getElementById("company").value =
-                    row.cells[0].textContent.trim();
+   
+    customerTableBody.addEventListener("click", function (event) {
 
-                document.getElementById("contact").value =
-                    row.cells[1].textContent.trim();
+        const row =
+            event.target.closest("tr");
 
-                document.getElementById("email").value =
-                    row.cells[2].textContent.trim();
+        if (!row) {
+            return;
+        }
 
-                document.getElementById("location").value =
-                    row.cells[3].textContent.trim();
-
-                document.getElementById("status").value =
-                    row.cells[4].textContent.trim();
-
-
-                document.querySelector(
-                    "#customer-form-container h3"
-                ).textContent = "Edit Customer";
-
-                document.querySelector(
-                    ".save-button"
-                ).textContent = "Update Customer";
-
-
-                customerFormContainer.style.display = "block";
-
-
-                customerFormContainer.scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-
-
-         
-            if (event.target.classList.contains("delete-button")) {
-
-                const row =
-                    event.target.closest("tr");
-
-                const companyName =
-                    row.cells[0].textContent.trim();
-
-
-                const confirmed = confirm(
-                    `Are you sure you want to delete ${companyName}?`
-                );
-
-
-                if (confirmed) {
-
-                    row.remove();
-
-                    updateCustomerCount();
-
-                    filterCustomers();
-                }
-            }
-        });
+        const index =
+            Number(row.dataset.index);
 
 
         
-        function filterCustomers() {
+        if (event.target.classList.contains("edit-button")) {
 
-            const searchValue =
-                searchInput.value.toLowerCase();
+            const customer =
+                customers[index];
 
-            const selectedStatus =
-                statusFilter.value;
-
-            const rows =
-                customerTableBody.querySelectorAll("tr");
+            editingIndex = index;
 
 
-            rows.forEach(function (row) {
+            document.getElementById("company").value =
+                customer.company;
 
-                const company =
-                    row.cells[0].textContent.toLowerCase();
+            document.getElementById("contact").value =
+                customer.contact;
 
-                const contact =
-                    row.cells[1].textContent.toLowerCase();
+            document.getElementById("email").value =
+                customer.email;
 
-                const email =
-                    row.cells[2].textContent.toLowerCase();
+            document.getElementById("location").value =
+                customer.location;
 
-                const location =
-                    row.cells[3].textContent.toLowerCase();
-
-                const status =
-                    row.cells[4].textContent.trim();
+            document.getElementById("status").value =
+                customer.status;
 
 
-                const matchesSearch =
-                    company.includes(searchValue) ||
-                    contact.includes(searchValue) ||
-                    email.includes(searchValue) ||
-                    location.includes(searchValue);
+            document.querySelector(
+                "#customer-form-container h3"
+            ).textContent = "Edit Customer";
+
+            document.querySelector(
+                ".save-button"
+            ).textContent = "Update Customer";
 
 
-                const matchesStatus =
-                    selectedStatus === "All" ||
-                    status === selectedStatus;
+            customerFormContainer.style.display = "block";
 
 
-                if (matchesSearch && matchesStatus) {
-
-                    row.style.display = "";
-
-                } else {
-
-                    row.style.display = "none";
-                }
+            customerFormContainer.scrollIntoView({
+                behavior: "smooth"
             });
         }
 
 
         
-        searchInput.addEventListener(
-            "input",
-            filterCustomers
-        );
+        if (event.target.classList.contains("delete-button")) {
+
+            const customer =
+                customers[index];
+
+            const confirmed = confirm(
+                `Are you sure you want to delete ${customer.company}?`
+            );
 
 
-        
-        statusFilter.addEventListener(
-            "change",
-            filterCustomers
-        );
+            if (confirmed) {
 
+                customers.splice(index, 1);
 
-        
-        function updateCustomerCount() {
+                saveCustomers();
 
-            totalCustomers.textContent =
-                customerTableBody.querySelectorAll("tr").length;
+                renderCustomers();
+            }
         }
+    });
 
-    </script>
+
+    
+    function filterCustomers() {
+
+        const searchValue =
+            searchInput.value.toLowerCase().trim();
+
+        const selectedStatus =
+            statusFilter.value;
+
+        const rows =
+            customerTableBody.querySelectorAll("tr");
+
+
+        rows.forEach(function (row) {
+
+            const index =
+                Number(row.dataset.index);
+
+            const customer =
+                customers[index];
+
+
+            const matchesSearch =
+                customer.company.toLowerCase().includes(searchValue) ||
+                customer.contact.toLowerCase().includes(searchValue) ||
+                customer.email.toLowerCase().includes(searchValue) ||
+                customer.location.toLowerCase().includes(searchValue);
+
+
+            const matchesStatus =
+                selectedStatus === "All" ||
+                customer.status === selectedStatus;
+
+
+            if (matchesSearch && matchesStatus) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        filterCustomers
+    );
+
+
+    statusFilter.addEventListener(
+        "change",
+        filterCustomers
+    );
+
+
+   
+    function updateCustomerCount() {
+
+        totalCustomers.textContent =
+            customers.length;
+    }
+
+
+    
+    renderCustomers();
+
+</script>
 
 </body>
 </html>
