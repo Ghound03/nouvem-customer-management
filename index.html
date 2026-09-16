@@ -326,27 +326,27 @@
 
             <div id="dashboard-cards">
 
-                <div class="dashboard-card">
-                    <p>Total Customers</p>
-                    <h3 id="total-customers">4</h3>
-                </div>
+    <div class="dashboard-card">
+        <p>Total Customers</p>
+        <h3 id="total-customers">0</h3>
+    </div>
 
-                <div class="dashboard-card">
-                    <p>Active Customers</p>
-                    <h3>2</h3>
-                </div>
+    <div class="dashboard-card">
+        <p>Active Customers</p>
+        <h3 id="active-customers">0</h3>
+    </div>
 
-                <div class="dashboard-card">
-                    <p>Implementations</p>
-                    <h3>1</h3>
-                </div>
+    <div class="dashboard-card">
+        <p>Implementations</p>
+        <h3 id="implementation-customers">0</h3>
+    </div>
 
-                <div class="dashboard-card">
-                    <p>Support Required</p>
-                    <h3>1</h3>
-                </div>
+    <div class="dashboard-card">
+        <p>Support Required</p>
+        <h3 id="support-customers">0</h3>
+    </div>
 
-            </div>
+</div>
 
         </section>
 
@@ -959,11 +959,40 @@
 
 
    
-    function updateCustomerCount() {
+    
+function updateDashboard() {
 
-        totalCustomers.textContent =
-            customers.length;
-    }
+    
+    const total = customers.length;
+
+    
+    const active = customers.filter(function (customer) {
+        return customer.status === "Active";
+    }).length;
+
+    
+    const implementation = customers.filter(function (customer) {
+        return customer.status === "Implementation";
+    }).length;
+
+    
+    const support = customers.filter(function (customer) {
+        return customer.status === "Support Required";
+    }).length;
+
+    
+    document.getElementById("total-customers").textContent =
+        total;
+
+    document.getElementById("active-customers").textContent =
+        active;
+
+    document.getElementById("implementation-customers").textContent =
+        implementation;
+
+    document.getElementById("support-customers").textContent =
+        support;
+}
 
 
     
