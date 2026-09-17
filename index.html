@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>NOUVEM Customer Management</title>
 
     <style>
@@ -50,7 +49,8 @@
             font-size: 22px;
         }
 
-        
+        /* Dashboard */
+
         #dashboard-cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -74,7 +74,8 @@
             font-size: 28px;
         }
 
-       
+        /* Customer header */
+
         .customer-header {
             display: flex;
             justify-content: space-between;
@@ -101,7 +102,8 @@
             background-color: #1d4ed8;
         }
 
-        /* Search and filter tools */
+        /* Search and filter */
+
         .customer-tools {
             display: flex;
             gap: 12px;
@@ -124,7 +126,8 @@
             min-width: 180px;
         }
 
-        
+        /* Customer form */
+
         #customer-form-container {
             display: none;
             background-color: white;
@@ -194,7 +197,8 @@
             background-color: #f3f4f6;
         }
 
-       
+        /* Customer table */
+
         #customer-list {
             background-color: white;
             border-radius: 8px;
@@ -229,7 +233,8 @@
             background-color: #f9fafb;
         }
 
-       
+        /* Status labels */
+
         .status {
             display: inline-block;
             padding: 5px 10px;
@@ -253,7 +258,8 @@
             color: #92400e;
         }
 
-        
+        /* Action buttons */
+
         .action-button {
             border: 1px solid #d1d5db;
             background-color: white;
@@ -271,7 +277,34 @@
             color: #dc2626;
         }
 
-        
+        /* Feedback messages */
+
+        #message-container {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        #message-container[hidden] {
+            display: none;
+        }
+
+        .message-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .message-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        /* Responsive layout */
+
         @media (max-width: 800px) {
             #dashboard-cards {
                 grid-template-columns: repeat(2, 1fr);
@@ -307,6 +340,28 @@
                 padding: 20px;
             }
         }
+
+            #empty-state {
+               padding: 24px;
+               color: #6b7280;
+               text-align: center;
+            }
+
+            #empty-state[hidden] {
+               display: none;
+            }
+
+            @media (max-width: 600px) {
+    th,
+    td {
+        padding: 12px;
+        white-space: nowrap;
+    }
+
+    .action-button {
+        margin-bottom: 5px;
+    }
+}
     </style>
 </head>
 
@@ -319,68 +374,76 @@
 
     <main>
 
-        
+        <!-- Dashboard -->
+
         <section id="dashboard">
 
             <h2>Dashboard</h2>
 
             <div id="dashboard-cards">
 
-    <div class="dashboard-card">
-        <p>Total Customers</p>
-        <h3 id="total-customers">0</h3>
-    </div>
+                <div class="dashboard-card">
+                    <p>Total Customers</p>
+                    <h3 id="total-customers">0</h3>
+                </div>
 
-    <div class="dashboard-card">
-        <p>Active Customers</p>
-        <h3 id="active-customers">0</h3>
-    </div>
+                <div class="dashboard-card">
+                    <p>Active Customers</p>
+                    <h3 id="active-customers">0</h3>
+                </div>
 
-    <div class="dashboard-card">
-        <p>Implementations</p>
-        <h3 id="implementation-customers">0</h3>
-    </div>
+                <div class="dashboard-card">
+                    <p>Implementations</p>
+                    <h3 id="implementation-customers">0</h3>
+                </div>
 
-    <div class="dashboard-card">
-        <p>Support Required</p>
-        <h3 id="support-customers">0</h3>
-    </div>
+                <div class="dashboard-card">
+                    <p>Support Required</p>
+                    <h3 id="support-customers">0</h3>
+                </div>
 
-</div>
+            </div>
 
         </section>
 
-       
+        <!-- Customers -->
+
         <section id="customers">
 
-            
-<div
-    id="message-container"
-    role="status"
-    aria-live="polite"
-    hidden>
-</div>
+            <!-- Feedback messages -->
+
+            <div
+                id="message-container"
+                role="status"
+                aria-live="polite"
+                hidden>
+            </div>
 
             <div class="customer-header">
 
                 <h2>Customers</h2>
 
-                <button id="add-customer-button">
+                <button id="add-customer-button" type="button">
                     + Add Customer
                 </button>
 
             </div>
 
-            
+            <!-- Search and filter -->
+
             <div class="customer-tools">
 
                 <input
                     type="text"
                     id="search-input"
                     placeholder="Search customers..."
+                    aria-label="Search customers"
                 >
 
-                <select id="status-filter">
+                <select
+                    id="status-filter"
+                    aria-label="Filter customers by status"
+                >
                     <option value="All">All Statuses</option>
                     <option value="Active">Active</option>
                     <option value="Implementation">Implementation</option>
@@ -389,7 +452,8 @@
 
             </div>
 
-            
+            <!-- Customer form -->
+
             <div id="customer-form-container">
 
                 <h3>Add Customer</h3>
@@ -439,17 +503,9 @@
                             <label for="status">Status</label>
 
                             <select id="status" required>
-                                <option value="Active">
-                                    Active
-                                </option>
-
-                                <option value="Implementation">
-                                    Implementation
-                                </option>
-
-                                <option value="Support Required">
-                                    Support Required
-                                </option>
+                                <option value="Active">Active</option>
+                                <option value="Implementation">Implementation</option>
+                                <option value="Support Required">Support Required</option>
                             </select>
 
                         </div>
@@ -479,13 +535,13 @@
 
             </div>
 
-            
+            <!-- Customer table -->
+
             <div id="customer-list">
 
                 <table>
 
                     <thead>
-
                         <tr>
                             <th>Company</th>
                             <th>Contact</th>
@@ -494,106 +550,17 @@
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
-
                     </thead>
 
                     <tbody id="customer-table-body">
-
-                        
-                            <td>GreenFields Foods</td>
-                            <td>Sarah Kelly</td>
-                            <td>sarah@example.com</td>
-                            <td>Dublin</td>
-
-                            <td>
-                                <span class="status status-active">
-                                    Active
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="action-button edit-button">
-                                    Edit
-                                </button>
-
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
-                            </td>
-                        
-
-                        
-                            <td>Irish Protein Ltd</td>
-                            <td>John Murphy</td>
-                            <td>john@example.com</td>
-                            <td>Cork</td>
-
-                            <td>
-                                <span class="status status-implementation">
-                                    Implementation
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="action-button edit-button">
-                                    Edit
-                                </button>
-
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
-                            </td>
-                        
-
-                        
-                            <td>Emerald Meats</td>
-                            <td>Emma Byrne</td>
-                            <td>emma@example.com</td>
-                            <td>Meath</td>
-
-                            <td>
-                                <span class="status status-active">
-                                    Active
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="action-button edit-button">
-                                    Edit
-                                </button>
-
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
-                            </td>
-                        
-
-                        
-                            <td>Atlantic Foods</td>
-                            <td>Michael Ryan</td>
-                            <td>michael@example.com</td>
-                            <td>Galway</td>
-
-                            <td>
-                                <span class="status status-support">
-                                    Support Required
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="action-button edit-button">
-                                    Edit
-                                </button>
-
-                                <button class="action-button delete-button">
-                                    Delete
-                                </button>
-                            </td>
-                        
-
+                        <!-- JavaScript generates customer rows here -->
                     </tbody>
 
                 </table>
+
+                <p id="empty-state" hidden>
+                   No customers match your search or filter.
+                </p>
 
             </div>
 
@@ -602,512 +569,664 @@
     </main>
 
     <script>
-    const addCustomerButton =
-        document.getElementById("add-customer-button");
 
-    const customerFormContainer =
-        document.getElementById("customer-form-container");
+        // Get HTML elements
 
-    const customerForm =
-        document.getElementById("customer-form");
+        const addCustomerButton =
+            document.getElementById("add-customer-button");
 
-    const cancelButton =
-        document.getElementById("cancel-button");
+        const customerFormContainer =
+            document.getElementById("customer-form-container");
 
-    const customerTableBody =
-        document.getElementById("customer-table-body");
+        const customerForm =
+            document.getElementById("customer-form");
 
-    const totalCustomers =
-        document.getElementById("total-customers");
+        const cancelButton =
+            document.getElementById("cancel-button");
 
-    const searchInput =
-        document.getElementById("search-input");
+        const customerTableBody =
+            document.getElementById("customer-table-body");
 
-    const statusFilter =
-        document.getElementById("status-filter");
+        const searchInput =
+            document.getElementById("search-input");
 
-    const messageContainer =
-    document.getElementById("message-container");
+        const statusFilter =
+            document.getElementById("status-filter");
 
-
-    
-    const defaultCustomers = [
-        {
-            company: "GreenFields Foods",
-            contact: "Sarah Kelly",
-            email: "sarah@example.com",
-            location: "Dublin",
-            status: "Active"
-        },
-        {
-            company: "Irish Protein Ltd",
-            contact: "John Murphy",
-            email: "john@example.com",
-            location: "Cork",
-            status: "Implementation"
-        },
-        {
-            company: "Emerald Meats",
-            contact: "Emma Byrne",
-            email: "emma@example.com",
-            location: "Meath",
-            status: "Active"
-        },
-        {
-            company: "Atlantic Foods",
-            contact: "Michael Ryan",
-            email: "michael@example.com",
-            location: "Galway",
-            status: "Support Required"
-        }
-    ];
+        const messageContainer =
+            document.getElementById("message-container");
 
 
-   
-    let customers = JSON.parse(
-        localStorage.getItem("nouvemCustomers")
-    );
+        // Default customer data
 
-    if (customers === null) {
-        customers = defaultCustomers;
+        const defaultCustomers = [
+            {
+                company: "GreenFields Foods",
+                contact: "Sarah Kelly",
+                email: "sarah@example.com",
+                location: "Dublin",
+                status: "Active"
+            },
+            {
+                company: "Irish Protein Ltd",
+                contact: "John Murphy",
+                email: "john@example.com",
+                location: "Cork",
+                status: "Implementation"
+            },
+            {
+                company: "Emerald Meats",
+                contact: "Emma Byrne",
+                email: "emma@example.com",
+                location: "Meath",
+                status: "Active"
+            },
+            {
+                company: "Atlantic Foods",
+                contact: "Michael Ryan",
+                email: "michael@example.com",
+                location: "Galway",
+                status: "Support Required"
+            }
+        ];
 
-        saveCustomers();
-    }
 
+        // Load saved customers from localStorage
 
-    let editingIndex = null;
-
-
-   
-    function saveCustomers() {
-        localStorage.setItem(
-            "nouvemCustomers",
-            JSON.stringify(customers)
+        let customers = JSON.parse(
+            localStorage.getItem("nouvemCustomers")
         );
-    }
 
-
-   
-    function getStatusClass(status) {
-
-        if (status === "Active") {
-            return "status-active";
+        if (customers === null) {
+            customers = defaultCustomers;
+            saveCustomers();
         }
 
-        if (status === "Implementation") {
-            return "status-implementation";
+
+        // null means we are adding a new customer.
+        // A number means we are editing an existing customer.
+
+        let editingIndex = null;
+
+
+        // Save customer data
+
+        function saveCustomers() {
+
+            localStorage.setItem(
+                "nouvemCustomers",
+                JSON.stringify(customers)
+            );
+
         }
 
-        return "status-support";
-    }
+
+        // Get the correct CSS class for a status
+
+        function getStatusClass(status) {
+
+            if (status === "Active") {
+                return "status-active";
+            }
+
+            if (status === "Implementation") {
+                return "status-implementation";
+            }
+
+            return "status-support";
+
+        }
 
 
-   
-    function renderCustomers() {
+        // Display feedback messages
 
-        customerTableBody.innerHTML = "";
+        function showMessage(message, type) {
 
-        customers.forEach(function (customer, index) {
+            messageContainer.textContent = message;
 
-            const statusClass =
-                getStatusClass(customer.status);
+            messageContainer.className =
+                type === "success"
+                    ? "message-success"
+                    : "message-error";
 
-            const row =
-                document.createElement("tr");
+            messageContainer.hidden = false;
 
-            row.dataset.index = index;
-
-            row.innerHTML = `
-                <td>${customer.company}</td>
-                <td>${customer.contact}</td>
-                <td>${customer.email}</td>
-                <td>${customer.location}</td>
-
-                <td>
-                    <span class="status ${statusClass}">
-                        ${customer.status}
-                    </span>
-                </td>
-
-                <td>
-                    <button class="action-button edit-button">
-                        Edit
-                    </button>
-
-                    <button class="action-button delete-button">
-                        Delete
-                    </button>
-                </td>
-            `;
-
-            customerTableBody.appendChild(row);
-        });
-
-        updateDashboard();
-
-        filterCustomers();
-    }
+        }
 
 
-    
-    addCustomerButton.addEventListener("click", function () {
+        // Clear previous feedback messages
 
-        editingIndex = null;
+        function clearMessage() {
 
-        customerForm.reset();
+            messageContainer.textContent = "";
 
-        document.querySelector(
-            "#customer-form-container h3"
-        ).textContent = "Add Customer";
+            messageContainer.className = "";
 
-        document.querySelector(
-            ".save-button"
-        ).textContent = "Save Customer";
+            messageContainer.hidden = true;
 
-        customerFormContainer.style.display = "block";
+        }
+
+
+        // Validate customer information
+
+        function validateCustomer(customer) {
+
+            // Prevent empty fields
+
+            if (
+                !customer.company ||
+                !customer.contact ||
+                !customer.email ||
+                !customer.location
+            ) {
+                return "Please complete all customer fields.";
+            }
+
+
+            // Prevent duplicate company names
+
+            const duplicateCompany = customers.some(function (
+                existingCustomer,
+                index
+            ) {
+
+                return (
+                    index !== editingIndex &&
+                    existingCustomer.company.toLowerCase() ===
+                        customer.company.toLowerCase()
+                );
+
+            });
+
+            if (duplicateCompany) {
+                return "A customer with this company name already exists.";
+            }
+
+
+            // Prevent duplicate email addresses
+
+            const duplicateEmail = customers.some(function (
+                existingCustomer,
+                index
+            ) {
+
+                return (
+                    index !== editingIndex &&
+                    existingCustomer.email.toLowerCase() ===
+                        customer.email.toLowerCase()
+                );
+
+            });
+
+            if (duplicateEmail) {
+                return "A customer with this email address already exists.";
+            }
+
+
+            // No validation errors
+
+            return null;
+
+        }
+
+
+        // Update dashboard statistics
+
+        function updateDashboard() {
+
+            const total = customers.length;
+
+            const active = customers.filter(function (customer) {
+                return customer.status === "Active";
+            }).length;
+
+            const implementation = customers.filter(function (customer) {
+                return customer.status === "Implementation";
+            }).length;
+
+            const support = customers.filter(function (customer) {
+                return customer.status === "Support Required";
+            }).length;
+
+
+            document.getElementById("total-customers").textContent =
+                total;
+
+            document.getElementById("active-customers").textContent =
+                active;
+
+            document.getElementById("implementation-customers").textContent =
+                implementation;
+
+            document.getElementById("support-customers").textContent =
+                support;
+
+        }
+
+
+        // Search and filter customers
+
+        function filterCustomers() {
+
+    const searchValue =
+        searchInput.value.toLowerCase().trim();
+
+    const selectedStatus =
+        statusFilter.value;
+
+    const rows =
+        customerTableBody.querySelectorAll("tr");
+
+    let visibleCount = 0;
+
+    rows.forEach(function (row) {
+
+        const index = Number(row.dataset.index);
+        const customer = customers[index];
+
+        const matchesSearch =
+            customer.company.toLowerCase().includes(searchValue) ||
+            customer.contact.toLowerCase().includes(searchValue) ||
+            customer.email.toLowerCase().includes(searchValue) ||
+            customer.location.toLowerCase().includes(searchValue);
+
+        const matchesStatus =
+            selectedStatus === "All" ||
+            customer.status === selectedStatus;
+
+        const isVisible = matchesSearch && matchesStatus;
+
+        row.style.display = isVisible ? "" : "none";
+
+        if (isVisible) {
+            visibleCount++;
+        }
+
     });
 
+    const emptyState =
+        document.getElementById("empty-state");
 
-   
-    cancelButton.addEventListener("click", function () {
+    emptyState.hidden = visibleCount > 0;
 
-        customerForm.reset();
-
-        customerFormContainer.style.display = "none";
-
-        editingIndex = null;
-    });
-
-    
-function showMessage(message, type) {
-
-    messageContainer.textContent = message;
-
-    messageContainer.className =
-        type === "success"
-            ? "message-success"
-            : "message-error";
-
-    messageContainer.hidden = false;
+    emptyState.textContent =
+        customers.length === 0
+            ? "No customers yet. Add your first customer to get started."
+            : "No customers match your search or filter.";
 }
 
 
+        // Render all customers in the table
 
-function validateCustomer(customer) {
+        function renderCustomers() {
 
-   
-    if (
-        !customer.company ||
-        !customer.contact ||
-        !customer.email ||
-        !customer.location
-    ) {
-        return "Please complete all customer fields.";
-    }
+            // Remove existing rows
 
-    
-    const duplicateCompany = customers.some(function (
-        existingCustomer,
-        index
-    ) {
-        return (
-            index !== editingIndex &&
-            existingCustomer.company.toLowerCase() ===
-                customer.company.toLowerCase()
-        );
-    });
-
-    if (duplicateCompany) {
-        return "A customer with this company name already exists.";
-    }
-
-    
-    const duplicateEmail = customers.some(function (
-        existingCustomer,
-        index
-    ) {
-        return (
-            index !== editingIndex &&
-            existingCustomer.email.toLowerCase() ===
-                customer.email.toLowerCase()
-        );
-    });
-
-    if (duplicateEmail) {
-        return "A customer with this email address already exists.";
-    }
-
-    
-    return null;
-}
-
-    
-// Create or update customer
-customerForm.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-    // Collect customer information
-    const customer = {
-        company:
-            document.getElementById("company").value.trim(),
-
-        contact:
-            document.getElementById("contact").value.trim(),
-
-        email:
-            document.getElementById("email").value.trim(),
-
-        location:
-            document.getElementById("location").value.trim(),
-
-        status:
-            document.getElementById("status").value
-    };
-
-    // Validate the customer
-    const validationError = validateCustomer(customer);
-
-    if (validationError) {
-        showMessage(validationError, "error");
-        return;
-    }
-
-    // Update existing customer
-    if (editingIndex !== null) {
-
-        customers[editingIndex] = customer;
-
-        showMessage(
-            "Customer updated successfully.",
-            "success"
-        );
-
-    } else {
-
-        // Create new customer
-        customers.push(customer);
-
-        showMessage(
-            "Customer added successfully.",
-            "success"
-        );
-    }
-
-    // Save and refresh the application
-    saveCustomers();
-
-    renderCustomers();
-
-    // Reset the form
-    editingIndex = null;
-
-    customerForm.reset();
-
-    customerFormContainer.style.display = "none";
-
-    document.querySelector(
-        "#customer-form-container h3"
-    ).textContent = "Add Customer";
-
-    document.querySelector(
-        ".save-button"
-    ).textContent = "Save Customer";
-});
+            customerTableBody.replaceChildren();
 
 
-   
-    customerTableBody.addEventListener("click", function (event) {
+            customers.forEach(function (customer, index) {
 
-        const row =
-            event.target.closest("tr");
+                // Create table row
 
-        if (!row) {
-            return;
+                const row =
+                    document.createElement("tr");
+
+                row.dataset.index = index;
+
+
+                // Create text cells safely
+
+                ["company", "contact", "email", "location"].forEach(
+                    function (field) {
+
+                        const cell =
+                            document.createElement("td");
+
+                        cell.textContent = customer[field];
+
+                        row.appendChild(cell);
+
+                    }
+                );
+
+
+                // Create status cell
+
+                const statusCell =
+                    document.createElement("td");
+
+                const statusBadge =
+                    document.createElement("span");
+
+                statusBadge.className =
+                    "status " + getStatusClass(customer.status);
+
+                statusBadge.textContent =
+                    customer.status;
+
+                statusCell.appendChild(statusBadge);
+
+                row.appendChild(statusCell);
+
+
+                // Create action buttons
+
+                const actionsCell =
+                    document.createElement("td");
+
+                const editButton =
+                    document.createElement("button");
+
+                editButton.type = "button";
+
+                editButton.className =
+                    "action-button edit-button";
+
+                editButton.textContent = "Edit";
+
+
+                const deleteButton =
+                    document.createElement("button");
+
+                deleteButton.type = "button";
+
+                deleteButton.className =
+                    "action-button delete-button";
+
+                deleteButton.textContent = "Delete";
+
+
+                actionsCell.append(editButton, deleteButton);
+
+                row.appendChild(actionsCell);
+
+
+                // Add row to table
+
+                customerTableBody.appendChild(row);
+
+            });
+
+
+            // Refresh dashboard and filters
+
+            updateDashboard();
+
+            filterCustomers();
+
         }
 
-        const index =
-            Number(row.dataset.index);
 
+        // Open Add Customer form
 
-        
-        if (event.target.classList.contains("edit-button")) {
+        addCustomerButton.addEventListener("click", function () {
 
-            const customer =
-                customers[index];
+            clearMessage();
 
-            editingIndex = index;
+            editingIndex = null;
 
-
-            document.getElementById("company").value =
-                customer.company;
-
-            document.getElementById("contact").value =
-                customer.contact;
-
-            document.getElementById("email").value =
-                customer.email;
-
-            document.getElementById("location").value =
-                customer.location;
-
-            document.getElementById("status").value =
-                customer.status;
-
+            customerForm.reset();
 
             document.querySelector(
                 "#customer-form-container h3"
-            ).textContent = "Edit Customer";
+            ).textContent = "Add Customer";
 
             document.querySelector(
                 ".save-button"
-            ).textContent = "Update Customer";
-
+            ).textContent = "Save Customer";
 
             customerFormContainer.style.display = "block";
 
-
-            customerFormContainer.scrollIntoView({
-                behavior: "smooth"
-            });
-        }
+        });
 
 
-        
-        if (event.target.classList.contains("delete-button")) {
+        // Cancel customer form
 
-            const customer =
-                customers[index];
+        cancelButton.addEventListener("click", function () {
 
-            const confirmed = confirm(
-                `Are you sure you want to delete ${customer.company}?`
-            );
+            customerForm.reset();
 
+            customerFormContainer.style.display = "none";
 
-            if (confirmed) {
+            editingIndex = null;
 
-    // Remove the customer
-    customers.splice(index, 1);
+            clearMessage();
 
-    // Clear an edit that may reference a deleted customer
-    editingIndex = null;
-
-    customerForm.reset();
-
-    customerFormContainer.style.display = "none";
-
-    // Save the updated customer list
-    saveCustomers();
-
-    // Refresh the table and dashboard
-    renderCustomers();
-
-    // Show confirmation
-    showMessage(
-        `${customer.company} deleted successfully.`,
-        "success"
-    );
-}
-        }
-    });
+        });
 
 
-    
-    function filterCustomers() {
+        // Create or update customer
 
-        const searchValue =
-            searchInput.value.toLowerCase().trim();
+        customerForm.addEventListener("submit", function (event) {
 
-        const selectedStatus =
-            statusFilter.value;
-
-        const rows =
-            customerTableBody.querySelectorAll("tr");
+            event.preventDefault();
 
 
-        rows.forEach(function (row) {
+            // Collect form values
+
+            const customer = {
+
+                company:
+                    document.getElementById("company").value.trim(),
+
+                contact:
+                    document.getElementById("contact").value.trim(),
+
+                email:
+                    document.getElementById("email").value.trim(),
+
+                location:
+                    document.getElementById("location").value.trim(),
+
+                status:
+                    document.getElementById("status").value
+
+            };
+
+
+            // Check for validation errors
+
+            const validationError =
+                validateCustomer(customer);
+
+            if (validationError) {
+
+                showMessage(validationError, "error");
+
+                return;
+
+            }
+
+
+            // Update existing customer
+
+            if (editingIndex !== null) {
+
+                customers[editingIndex] = customer;
+
+                showMessage(
+                    "Customer updated successfully.",
+                    "success"
+                );
+
+            } else {
+
+                // Create new customer
+
+                customers.push(customer);
+
+                showMessage(
+                    "Customer added successfully.",
+                    "success"
+                );
+
+            }
+
+
+            // Save data and refresh the page content
+
+            saveCustomers();
+
+            renderCustomers();
+
+
+            // Reset form
+
+            editingIndex = null;
+
+            customerForm.reset();
+
+            customerFormContainer.style.display = "none";
+
+            document.querySelector(
+                "#customer-form-container h3"
+            ).textContent = "Add Customer";
+
+            document.querySelector(
+                ".save-button"
+            ).textContent = "Save Customer";
+
+        });
+
+
+        // Handle Edit and Delete buttons
+
+        customerTableBody.addEventListener("click", function (event) {
+
+            const row =
+                event.target.closest("tr");
+
+            if (!row) {
+                return;
+            }
 
             const index =
                 Number(row.dataset.index);
 
-            const customer =
-                customers[index];
+
+            // Edit customer
+
+            if (event.target.classList.contains("edit-button")) {
+
+                clearMessage();
+
+                const customer =
+                    customers[index];
+
+                editingIndex = index;
 
 
-            const matchesSearch =
-                customer.company.toLowerCase().includes(searchValue) ||
-                customer.contact.toLowerCase().includes(searchValue) ||
-                customer.email.toLowerCase().includes(searchValue) ||
-                customer.location.toLowerCase().includes(searchValue);
+                // Fill form with existing customer information
+
+                document.getElementById("company").value =
+                    customer.company;
+
+                document.getElementById("contact").value =
+                    customer.contact;
+
+                document.getElementById("email").value =
+                    customer.email;
+
+                document.getElementById("location").value =
+                    customer.location;
+
+                document.getElementById("status").value =
+                    customer.status;
 
 
-            const matchesStatus =
-                selectedStatus === "All" ||
-                customer.status === selectedStatus;
+                // Update form heading and button
+
+                document.querySelector(
+                    "#customer-form-container h3"
+                ).textContent = "Edit Customer";
+
+                document.querySelector(
+                    ".save-button"
+                ).textContent = "Update Customer";
 
 
-            if (matchesSearch && matchesStatus) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
+                // Show form
+
+                customerFormContainer.style.display = "block";
+
+                customerFormContainer.scrollIntoView({
+                    behavior: "smooth"
+                });
+
             }
+
+
+            // Delete customer
+
+            if (event.target.classList.contains("delete-button")) {
+
+                const customer =
+                    customers[index];
+
+                const confirmed = confirm(
+                    `Are you sure you want to delete ${customer.company}?`
+                );
+
+
+                if (confirmed) {
+
+                    // Remove customer from array
+
+                    customers.splice(index, 1);
+
+
+                    // Clear any open edit form
+
+                    editingIndex = null;
+
+                    customerForm.reset();
+
+                    customerFormContainer.style.display = "none";
+
+
+                    // Save and refresh
+
+                    saveCustomers();
+
+                    renderCustomers();
+
+
+                    // Display confirmation
+
+                    showMessage(
+                        `${customer.company} deleted successfully.`,
+                        "success"
+                    );
+
+                }
+
+            }
+
         });
-    }
 
 
-    searchInput.addEventListener(
-        "input",
-        filterCustomers
-    );
+        // Search when the user types
+
+        searchInput.addEventListener(
+            "input",
+            filterCustomers
+        );
 
 
-    statusFilter.addEventListener(
-        "change",
-        filterCustomers
-    );
+        // Filter when the status changes
+
+        statusFilter.addEventListener(
+            "change",
+            filterCustomers
+        );
 
 
-   
-    
-function updateDashboard() {
+        // Display customers when the page first loads
 
-    
-    const total = customers.length;
+        renderCustomers();
 
-    
-    const active = customers.filter(function (customer) {
-        return customer.status === "Active";
-    }).length;
-
-    
-    const implementation = customers.filter(function (customer) {
-        return customer.status === "Implementation";
-    }).length;
-
-    
-    const support = customers.filter(function (customer) {
-        return customer.status === "Support Required";
-    }).length;
-
-    
-    document.getElementById("total-customers").textContent =
-        total;
-
-    document.getElementById("active-customers").textContent =
-        active;
-
-    document.getElementById("implementation-customers").textContent =
-        implementation;
-
-    document.getElementById("support-customers").textContent =
-        support;
-}
-
-
-    
-    renderCustomers();
-
-</script>
+    </script>
 
 </body>
 </html>
