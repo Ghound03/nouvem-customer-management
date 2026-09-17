@@ -353,6 +353,14 @@
        
         <section id="customers">
 
+            
+<div
+    id="message-container"
+    role="status"
+    aria-live="polite"
+    hidden>
+</div>
+
             <div class="customer-header">
 
                 <h2>Customers</h2>
@@ -618,6 +626,9 @@
     const statusFilter =
         document.getElementById("status-filter");
 
+    const messageContainer =
+    document.getElementById("message-container");
+
 
     
     const defaultCustomers = [
@@ -732,7 +743,7 @@
             customerTableBody.appendChild(row);
         });
 
-        updateCustomerCount();
+        updateDashboard();
 
         filterCustomers();
     }
@@ -767,60 +778,142 @@
         editingIndex = null;
     });
 
+    
+function showMessage(message, type) {
+
+    messageContainer.textContent = message;
+
+    messageContainer.className =
+        type === "success"
+            ? "message-success"
+            : "message-error";
+
+    messageContainer.hidden = false;
+}
+
+
+
+function validateCustomer(customer) {
+
+   
+    if (
+        !customer.company ||
+        !customer.contact ||
+        !customer.email ||
+        !customer.location
+    ) {
+        return "Please complete all customer fields.";
+    }
 
     
-    customerForm.addEventListener("submit", function (event) {
-
-        event.preventDefault();
-
-        const customer = {
-            company:
-                document.getElementById("company").value.trim(),
-
-            contact:
-                document.getElementById("contact").value.trim(),
-
-            email:
-                document.getElementById("email").value.trim(),
-
-            location:
-                document.getElementById("location").value.trim(),
-
-            status:
-                document.getElementById("status").value
-        };
-
-
-        
-        if (editingIndex !== null) {
-
-            customers[editingIndex] = customer;
-
-            editingIndex = null;
-
-        } else {
-
-            
-            customers.push(customer);
-        }
-
-
-        saveCustomers();
-
-        renderCustomers();
-
-        customerForm.reset();
-
-        customerFormContainer.style.display = "none";
-
-        document.querySelector(
-            "#customer-form-container h3"
-        ).textContent = "Add Customer";
-
-        document.querySelector(
-            ".save-button"
-        ).textContent = "Save Customer";
+    const duplicateCompany = customers.some(function (
+        existingCustomer,
+        index
+    ) {
+        return (
+            index !== editingIndex &&
+            existingCustomer.company.toLowerCase() ===
+                customer.company.toLowerCase()
+        );
     });
+
+    if (duplicateCompany) {
+        return "A customer with this company name already exists.";
+    }
+
+    
+    const duplicateEmail = customers.some(function (
+        existingCustomer,
+        index
+    ) {
+        return (
+            index !== editingIndex &&
+            existingCustomer.email.toLowerCase() ===
+                customer.email.toLowerCase()
+        );
+    });
+
+    if (duplicateEmail) {
+        return "A customer with this email address already exists.";
+    }
+
+    
+    return null;
+}
+
+    
+// Create or update customer
+customerForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    // Collect customer information
+    const customer = {
+        company:
+            document.getElementById("company").value.trim(),
+
+        contact:
+            document.getElementById("contact").value.trim(),
+
+        email:
+            document.getElementById("email").value.trim(),
+
+        location:
+            document.getElementById("location").value.trim(),
+
+        status:
+            document.getElementById("status").value
+    };
+
+    // Validate the customer
+    const validationError = validateCustomer(customer);
+
+    if (validationError) {
+        showMessage(validationError, "error");
+        return;
+    }
+
+    // Update existing customer
+    if (editingIndex !== null) {
+
+        customers[editingIndex] = customer;
+
+        showMessage(
+            "Customer updated successfully.",
+            "success"
+        );
+
+    } else {
+
+        // Create new customer
+        customers.push(customer);
+
+        showMessage(
+            "Customer added successfully.",
+            "success"
+        );
+    }
+
+    // Save and refresh the application
+    saveCustomers();
+
+    renderCustomers();
+
+    // Reset the form
+    editingIndex = null;
+
+    customerForm.reset();
+
+    customerFormContainer.style.display = "none";
+
+    document.querySelector(
+        "#customer-form-container h3"
+    ).textContent = "Add Customer";
+
+    document.querySelector(
+        ".save-button"
+    ).textContent = "Save Customer";
+});
 
 
    
@@ -893,12 +986,28 @@
 
             if (confirmed) {
 
-                customers.splice(index, 1);
+    // Remove the customer
+    customers.splice(index, 1);
 
-                saveCustomers();
+    // Clear an edit that may reference a deleted customer
+    editingIndex = null;
 
-                renderCustomers();
-            }
+    customerForm.reset();
+
+    customerFormContainer.style.display = "none";
+
+    // Save the updated customer list
+    saveCustomers();
+
+    // Refresh the table and dashboard
+    renderCustomers();
+
+    // Show confirmation
+    showMessage(
+        `${customer.company} deleted successfully.`,
+        "success"
+    );
+}
         }
     });
 
